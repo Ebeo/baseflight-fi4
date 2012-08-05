@@ -89,12 +89,6 @@ retry:
     // Now time to init them, acc first
     if (sensors(SENSOR_ACC))
         acc.init();    
-		
-    // this is safe because either mpu6050 or mpu3050 sets it, and in case of fail, none do.
-    gyro.init();
-    // todo: this is driver specific :(
-    if (!haveMpu6k)
-        mpu3050Config(cfg.gyro_lpf);
 
 		#ifdef MS5611
 		if (!ms5611Init())
@@ -102,7 +96,13 @@ retry:
 		#else
 		if (!bmp085Init())
         sensorsClear(SENSOR_BARO);
-		#endif		
+		#endif
+		
+    // this is safe because either mpu6050 or mpu3050 sets it, and in case of fail, none do.
+    gyro.init();
+    // todo: this is driver specific :(
+    if (!haveMpu6k)
+        mpu3050Config(cfg.gyro_lpf);
 		
     // calculate magnetic declination
     deg = cfg.mag_declination / 100;

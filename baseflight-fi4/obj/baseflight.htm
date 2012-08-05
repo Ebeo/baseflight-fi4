@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\obj\baseflight.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\obj\baseflight.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 894]: Last Updated: Thu Aug 02 20:17:24 2012
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 4.1 [Build 894]: Last Updated: Sat Aug 04 12:29:45 2012
 <BR><P>
 <H3>Maximum Stack Usage =        368 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -466,10 +466,10 @@ Global Symbols
 <P><STRONG><a name="[9e]"></a>sensorsAutodetect</STRONG> (Thumb, 326 bytes, Stack size 40 bytes, sensors.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = sensorsAutodetect &rArr; mpu6050Detect &rArr; i2cWrite &rArr; i2cWriteBuffer &rArr; i2cInit &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
+<BR>[Calls]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu6050Detect
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Detect
-<LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Config
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Config
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mma8452Detect
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmc5883lDetect
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;adxl345Detect
@@ -1007,7 +1007,7 @@ Global Symbols
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611UP_Start
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu6050Detect
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Detect
-<LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Config
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu3050Config
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmc5883lInit
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmc5883lFinishCal
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hmc5883lCal
@@ -1059,7 +1059,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sensorsAutodetect
 </UL>
 
-<P><STRONG><a name="[c2]"></a>mpu3050Config</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, drv_mpu3050.o(.text))
+<P><STRONG><a name="[c3]"></a>mpu3050Config</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, drv_mpu3050.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = mpu3050Config &rArr; i2cWrite &rArr; i2cWriteBuffer &rArr; i2cInit &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2cWrite
@@ -1421,7 +1421,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2cWrite
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
+<BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
 </UL>
 
 <P><STRONG><a name="[16b]"></a>ms5611ReadCalibration</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, drv_ms5611.o(.text))
@@ -1430,10 +1430,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2cRead
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
+<BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611Init
 </UL>
 
-<P><STRONG><a name="[c3]"></a>ms5611Init</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, drv_ms5611.o(.text))
+<P><STRONG><a name="[c2]"></a>ms5611Init</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, drv_ms5611.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = ms5611Init &rArr; ms5611reset &rArr; i2cWrite &rArr; i2cWriteBuffer &rArr; i2cInit &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ms5611ReadCalibration

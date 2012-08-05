@@ -622,6 +622,11 @@
               <FilePath>.\src\drv_i2c_soft.c</FilePath>
             </File>
             <File>
+              <FileName>drv_l3g4200d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_l3g4200d.c</FilePath>
+            </File>
+            <File>
               <FileName>drv_ms5611.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\drv_ms5611.c</FilePath>
@@ -1407,6 +1412,11 @@
               <FileName>drv_i2c_soft.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\drv_i2c_soft.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_l3g4200d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_l3g4200d.c</FilePath>
             </File>
             <File>
               <FileName>drv_ms5611.c</FileName>
@@ -2374,6 +2384,11 @@
               <FileName>drv_i2c_soft.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\drv_i2c_soft.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_l3g4200d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_l3g4200d.c</FilePath>
             </File>
             <File>
               <FileName>drv_ms5611.c</FileName>

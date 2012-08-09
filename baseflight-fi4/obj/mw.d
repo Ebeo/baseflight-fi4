@@ -46,6 +46,7 @@
 .\obj\mw.o: src\drv_mma845x.h
 .\obj\mw.o: src\drv_mpu3050.h
 .\obj\mw.o: src\drv_mpu6050.h
+.\obj\mw.o: src\drv_l3g4200d.h
 .\obj\mw.o: src\drv_pwm.h
 .\obj\mw.o: src\drv_uart.h
 .\obj\mw.o: src\drv_hcsr04.h

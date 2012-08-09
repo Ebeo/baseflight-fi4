@@ -46,6 +46,7 @@
 .\obj\drv_i2c.o: src\drv_mma845x.h
 .\obj\drv_i2c.o: src\drv_mpu3050.h
 .\obj\drv_i2c.o: src\drv_mpu6050.h
+.\obj\drv_i2c.o: src\drv_l3g4200d.h
 .\obj\drv_i2c.o: src\drv_pwm.h
 .\obj\drv_i2c.o: src\drv_uart.h
 .\obj\drv_i2c.o: src\drv_hcsr04.h

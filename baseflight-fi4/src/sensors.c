@@ -35,7 +35,7 @@ void sensorsAutodetect(void)
     bool havel3g4200d = false;
 
     // Autodetect gyro hardware. We have MPU3050 or MPU6050.
-    if (mpu6050Detect(&acc, &gyro)) {
+    if (mpu6050Detect(&acc, &gyro, cfg.mpu6050_scale)) {
         // this filled up  acc.* struct with init values
         haveMpu6k = true;
     } else if (l3g4200dDetect(&gyro)) {
@@ -59,7 +59,7 @@ retry:
             ; // fallthrough
        case 2: // MPU6050
             if (haveMpu6k) {
-                mpu6050Detect(&acc, &gyro); // yes, i'm rerunning it again.  re-fill acc struct
+                mpu6050Detect(&acc, &gyro, cfg.mpu6050_scale); // yes, i'm rerunning it again.  re-fill acc struct
                 accHardware = ACC_MPU6050;
                 if (cfg.acc_hardware == ACC_MPU6050)
                     break;
@@ -85,10 +85,6 @@ retry:
         }
     }
 
-    // Detect what else is available    
-    if (!hmc5883lDetect())
-        sensorsClear(SENSOR_MAG);
-
     // Now time to init them, acc first
     if (sensors(SENSOR_ACC))
         acc.init();    
@@ -104,6 +100,10 @@ retry:
     // this is safe because either mpu6050 or mpu3050 or lg3d20 sets it, and in case of fail, we never get here.
     gyro.init();
 
+    // Detect what else is available    
+    if (!hmc5883lDetect())
+        sensorsClear(SENSOR_MAG);		
+		
     // todo: this is driver specific :(
     if (havel3g4200d) {
         l3g4200dConfig(cfg.gyro_lpf);
@@ -357,8 +357,8 @@ static void Mag_getRawADC(void)
     hmc5883lRead(rawADC);
 
     // no way? is THIS finally the proper orientation?? (by GrootWitBaas)
-    magADC[ROLL] = rawADC[2]; // X
-    magADC[PITCH] = -rawADC[0]; // Y
+    magADC[ROLL] = rawADC[0]; // X
+    magADC[PITCH] = rawADC[2]; // Y
     magADC[YAW] = -rawADC[1]; // Z
 }
 

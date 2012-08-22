@@ -33,15 +33,16 @@ bool hmc5883lDetect(void)
 {
     bool ack = false;
     uint8_t sig = 0;
-
+		
+    delay(50);
     ack = i2cRead(MAG_ADDRESS, 0x0A, 1, &sig);
-		if (!ack)
+    if (!ack)
 		{
 			delay(50);
 			ack = i2cRead(MAG_ADDRESS, 0x0A, 1, &sig);
 		}
-			
-    if (!ack || sig != 'H')
+		
+		if (!ack || sig != 'H')
         return false;
 
     return true;

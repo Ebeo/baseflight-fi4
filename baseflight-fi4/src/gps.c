@@ -17,6 +17,12 @@ void gpsInit(uint32_t baudrate)
     delay(500);
     if (GPS_Present)
         sensorsSet(SENSOR_GPS);
+		else
+		{
+			delay(1500);
+			if (GPS_Present)
+					sensorsSet(SENSOR_GPS);
+		}
 }
 
 /*-----------------------------------------------------------

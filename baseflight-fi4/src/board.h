@@ -51,6 +51,7 @@ typedef enum {
 
 typedef void (* sensorInitFuncPtr)(void);                   // sensor init prototype
 typedef void (* sensorReadFuncPtr)(int16_t *data);          // sensor read and align prototype
+typedef int32_t (* baroCalculateFuncPtr)(void);             // baro calculation (returns altitude in cm based on static data collected)
 typedef void (* uartReceiveCallbackPtr)(uint16_t data);     // used by uart2 driver to return frames to app
 typedef uint16_t (* rcReadRawDataPtr)(uint8_t chan);        // used by receiver driver to return channel data
 
@@ -61,6 +62,18 @@ typedef struct sensor_t
     sensorReadFuncPtr align;
     sensorReadFuncPtr temperature;
 } sensor_t;
+
+typedef struct baro_t
+{
+    uint16_t ut_delay;
+    uint16_t up_delay;
+    uint16_t repeat_delay;
+    sensorInitFuncPtr start_ut;
+    sensorInitFuncPtr get_ut;
+    sensorInitFuncPtr start_up;
+    sensorInitFuncPtr get_up;
+    baroCalculateFuncPtr calculate;
+} baro_t;
 
 #define digitalHi(p, i)     { p->BSRR = i; }
 #define digitalLo(p, i)     { p->BRR = i; }
@@ -95,8 +108,6 @@ typedef struct sensor_t
 #define BARO
 #define LEDRING
 #define SONAR
-
-#define MS5611
 
 #endif
 

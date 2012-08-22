@@ -172,8 +172,11 @@ bool mpu6050Detect(sensor_t * acc, sensor_t * gyro, uint8_t scale)
 
 #ifdef MPU6050_DMP
     mpu6050DmpInit();
-#endif		
-		
+#else
+		i2cWrite(MPU6050_ADDRESS, MPU_RA_USER_CTRL, 0x00);
+		i2cWrite(MPU6050_ADDRESS, MPU_RA_INT_PIN_CFG, 0x02); //INT_PIN_CFG   -- INT_LEVEL=0 ; INT_OPEN=0 ; LATCH_INT_EN=0 ; INT_RD_CLEAR=0 ; FSYNC_INT_LEVEL=0 ; FSYNC_INT_EN=0 ; I2C_BYPASS_EN=1 ; CLKOUT_EN=0		
+#endif
+
     return true;
 }
 
@@ -208,6 +211,11 @@ static void mpu6050GyroInit(void)
 #ifndef MPU6050_DMP
     i2cWrite(MPU6050_ADDRESS, MPU_RA_PWR_MGMT_1, 0x80);      //PWR_MGMT_1    -- DEVICE_RESET 1
     delay(5);
+
+		//FOR MAG
+		i2cWrite(MPU6050_ADDRESS, MPU_RA_USER_CTRL, 0x00);
+		i2cWrite(MPU6050_ADDRESS, MPU_RA_INT_PIN_CFG, 0x02); //INT_PIN_CFG   -- INT_LEVEL=0 ; INT_OPEN=0 ; LATCH_INT_EN=0 ; INT_RD_CLEAR=0 ; FSYNC_INT_LEVEL=0 ; FSYNC_INT_EN=0 ; I2C_BYPASS_EN=1 ; CLKOUT_EN=0			
+	
     i2cWrite(MPU6050_ADDRESS, MPU_RA_SMPLRT_DIV, 0x00);      //SMPLRT_DIV    -- SMPLRT_DIV = 0  Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV)
     i2cWrite(MPU6050_ADDRESS, MPU_RA_PWR_MGMT_1, 0x03);      //PWR_MGMT_1    -- SLEEP 0; CYCLE 0; TEMP_DIS 0; CLKSEL 3 (PLL with Z Gyro reference)
     i2cWrite(MPU6050_ADDRESS, MPU_RA_CONFIG, MPU6050_DLPF_CFG);  //CONFIG        -- EXT_SYNC_SET 0 (disable input pin for data sync) ; default DLPF_CFG = 0 => ACC bandwidth = 260Hz  GYRO bandwidth = 256Hz)
@@ -222,11 +230,6 @@ static void mpu6050GyroInit(void)
     } else {
         i2cWrite(MPU6050_ADDRESS, MPU_RA_ACCEL_CONFIG, 2 << 3);
     }
-		
-		//FOR MAG
-		i2cWrite(MPU6050_ADDRESS, MPU_RA_USER_CTRL, 0x00);
-		i2cWrite(MPU6050_ADDRESS, MPU_RA_INT_PIN_CFG, 0x02); //INT_PIN_CFG   -- INT_LEVEL=0 ; INT_OPEN=0 ; LATCH_INT_EN=0 ; INT_RD_CLEAR=0 ; FSYNC_INT_LEVEL=0 ; FSYNC_INT_EN=0 ; I2C_BYPASS_EN=1 ; CLKOUT_EN=0		
-		
 #endif
 }
 

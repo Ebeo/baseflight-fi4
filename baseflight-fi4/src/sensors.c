@@ -17,6 +17,7 @@ extern float magneticDeclination;
 
 sensor_t acc;                       // acc access functions
 sensor_t gyro;                      // gyro access functions
+baro_t baro;                        // barometer access functions
 uint8_t accHardware = ACC_DEFAULT;  // which accel chip is used/detected
 
 #ifdef FY90Q
@@ -85,25 +86,24 @@ retry:
         }
     }
 
-    // Now time to init them, acc first
+    // Now time to init things, acc first
     if (sensors(SENSOR_ACC))
-        acc.init();    
+        acc.init();
 
-		#ifdef MS5611
-		if (!ms5611Init())
-        sensorsClear(SENSOR_BARO);		
-		#else
-		if (!bmp085Init())
-        sensorsClear(SENSOR_BARO);
-		#endif
-		
+#ifdef BARO
+    // Detect what pressure sensors are available. baro->update() is set to sensor-specific update function
+    if (!ms5611Detect(&baro)) {
+        // ms5611 disables BMP085, and tries to initialize + check PROM crc. if this works, we have a baro
+        if (!bmp085Detect(&baro)) {
+            // if both failed, we don't have anything
+            sensorsClear(SENSOR_BARO);
+        }
+    }
+#endif
+
     // this is safe because either mpu6050 or mpu3050 or lg3d20 sets it, and in case of fail, we never get here.
     gyro.init();
 
-    // Detect what else is available    
-    if (!hmc5883lDetect())
-        sensorsClear(SENSOR_MAG);		
-		
     // todo: this is driver specific :(
     if (havel3g4200d) {
         l3g4200dConfig(cfg.gyro_lpf);
@@ -111,7 +111,12 @@ retry:
         if (!haveMpu6k)
             mpu3050Config(cfg.gyro_lpf);
     }
-		
+
+#ifdef MAG
+    if (!hmc5883lDetect())
+        sensorsClear(SENSOR_MAG);
+#endif
+
     // calculate magnetic declination
     deg = cfg.mag_declination / 100;
     min = cfg.mag_declination % 100;
@@ -239,70 +244,40 @@ void ACC_getADC(void)
 }
 
 #ifdef BARO
-static uint32_t baroDeadline = 0;
-static uint8_t baroState = 0;
-static uint16_t baroUT = 0;
-static uint32_t baroUP = 0;
-
 void Baro_update(void)
 {
+    static uint32_t baroDeadline = 0;
+    static uint8_t state = 0;
     int32_t pressure;
 
-    if (currentTime < baroDeadline)
+    if ((int32_t)(currentTime - baroDeadline) < 0)
         return;
 
     baroDeadline = currentTime;
 
-		#ifdef MS5611
-			switch (baroState) {
-					case 0:
-						ms5611UT_Start();
-							baroState++;
-							baroDeadline += 10000;
-							break;
-					case 1:
-							ms5611UT_Read();
-							baroState++;
-							break;
-					case 2:
-						ms5611UP_Start();
-							baroState++;
-							baroDeadline += 10000;
-							break;
-					case 3:
-						ms5611UP_Read();
-							pressure = ms5611Calculate();
-							BaroAlt = (1.0f - pow(pressure / 101325.0f, 0.190295f)) * 4433000.0f; // centimeter
-							baroState = 0;
-							baroDeadline += 4000;
-							break;
-			}		
-		#else
-			switch (baroState) {
-					case 0:
-							bmp085_start_ut();
-							baroState++;
-							baroDeadline += 4600;
-							break;
-					case 1:
-							baroUT = bmp085_get_ut();
-							baroState++;
-							break;
-					case 2:
-							bmp085_start_up();
-							baroState++;
-							baroDeadline += 26000;
-							break;
-					case 3:
-							baroUP = bmp085_get_up();
-							bmp085_get_temperature(baroUT);
-							pressure = bmp085_get_pressure(baroUP);
-							BaroAlt = (1.0f - pow(pressure / 101325.0f, 0.190295f)) * 4433000.0f; // centimeter
-							baroState = 0;
-							baroDeadline += 5000;
-							break;			
-			}
-		#endif
+    switch (state) {
+        case 0:
+            baro.start_ut();
+            state++;
+            baroDeadline += baro.ut_delay;
+            break;
+        case 1:
+            baro.get_ut();
+            state++;
+            break;
+        case 2:
+            baro.start_up();
+            state++;
+            baroDeadline += baro.up_delay;
+            break;
+        case 3:
+            baro.get_up();
+            pressure = baro.calculate();
+            BaroAlt = (1.0f - pow(pressure / 101325.0f, 0.190295f)) * 4433000.0f; // centimeter
+            state = 0;
+            baroDeadline += baro.repeat_delay;
+            break;
+    }
 }
 #endif /* BARO */
 
@@ -445,7 +420,7 @@ void Mag_getADC(void)
     static int16_t magZeroTempMax[3];
     uint32_t axis;
     
-    if (currentTime < t)
+    if ((int32_t)(currentTime - t) < 0)
         return;                 //each read is spaced by 100ms
     t = currentTime + 100000;
 

@@ -50,7 +50,7 @@
 ### ADS-LD Output File: '.\obj\baseflight.axf'
 ### ADS-LD Command File: '.\obj\baseflight.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile '.\obj\baseflight.lnp', Handle=0x000002E4
+### Creating CmdFile '.\obj\baseflight.lnp', Handle=0x00000268
 ### Writing '.lnp' file
 ### ADS-LD Command file '.\obj\baseflight.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.
